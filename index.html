@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор скидок</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js "></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор скидок</title>
+
+        <div class="panels">
+            <!-- Модели -->
+            <div class="panel left-panel" id="model-buttons"></div>
+
+            <!-- Центральная панель -->
+            <div class="panel center-panel" id="center-panel">
+                <div id="price-label"></div>
+                <div id="discounts-grid"></div>
+                <div class="input-group">
+                    <label>Стимулирующая:</label>
+                    <input type="text" id="stim-input">
+                    <button onclick="applyStim()">Применить</button>
+                </div>
+                <div class="input-group">
+                    <label>Trade-In:</label>
+                    <input type="text" id="tr-input">
+                    <button onclick="calculateTr()">Рассчитать</button>
+                </div>
+                <div id="dashboard">
+                    <strong>Применённые скидки:</strong>
+                    <pre id="dashboard-content"></pre>
+                </div>
+                <div id="income-label"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="p.json" type="application/json" id="p-data" defer></script>
+    <script src="d3.json" type="application/json" id="d-data" defer></script>
+    <script src="app.js"></script>
+</body>
+</html>
