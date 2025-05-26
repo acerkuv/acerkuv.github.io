@@ -36,16 +36,12 @@ function selectModel(model) {
   clearDetails();
 
   const group = document.createElement('div');
-
   Object.keys(data.p[model]).forEach(mod => {
     const btn = document.createElement('button');
     btn.textContent = mod;
     btn.onclick = () => selectModification(mod);
     group.appendChild(btn);
   });
-
-  detailsDiv.appendChild(group);
-}
 
   detailsDiv.appendChild(group);
 }
@@ -163,12 +159,14 @@ function printMargin() {
   const totalMargin = sumValues(margin);
   const netMargin = totalMargin / 1.2;
 
+  // Удаляем старый блок, если есть
   const oldMarginBox = document.getElementById('margin-box');
   if (oldMarginBox) oldMarginBox.remove();
 
+  // Создаём новый блок
   const marginBox = document.createElement('div');
   marginBox.id = 'margin-box';
-  marginBox.style.color = totalMargin > 0 ? 'green' : 'red';
+  marginBox.className = totalMargin > 0 ? 'green' : 'red';
 
   marginBox.innerHTML = `
     Маржа: ${totalMargin.toLocaleString()} руб<br>
