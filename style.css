@@ -1,38 +1,170 @@
+/* Основные стили */
 body {
-  font-family: sans-serif;
-  display: flex;
-  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
 #app {
   display: flex;
-  width: 100%;
-  max-width: 900px;
-  padding: 10px;
+  flex-direction: column;
+  max-width: 960px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 20px;
 }
 
+@media (min-width: 768px) {
+  #app {
+    flex-direction: row;
+  }
+}
+
+/* Левая панель моделей */
 .left-panel {
   flex: 1;
-  border-right: 1px solid #ccc;
-  padding-right: 10px;
+  margin-bottom: 20px;
 }
 
+.left-panel button {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.left-panel button:hover {
+  background-color: #0056b3;
+}
+
+/* Центральная панель деталей */
 .center-panel {
   flex: 2;
-  padding-left: 10px;
 }
 
-button {
-  margin: 5px 0;
-  width: 100%;
-  padding: 10px;
-}
-#margin-box {
-  font-size: 16px;
-  border-left: 4px solid currentColor;
+.center-panel > div,
+.center-panel > button {
+  margin-bottom: 15px;
 }
 
-#income-label {
+/* Цена автомобиля */
+.price-label {
+  background-color: #ffc107;
+  color: #333;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
   font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+/* Кнопки скидок */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.grid-container button {
+  padding: 10px;
+  font-size: 14px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.grid-container button:hover {
+  background-color: #1e7e34;
+}
+
+/* Поля ввода */
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.input-group button {
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+  background-color: #0056b3;
+}
+
+/* Поле применённых скидок */
+#dashboard {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  min-height: 100px;
+  white-space: pre-wrap;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Блок маржи */
+#margin-box {
   margin-top: 20px;
+  padding: 12px;
+  border-left: 4px solid currentColor;
+  background-color: #f1f1f1;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#margin-box.green {
+  color: green;
+}
+
+#margin-box.red {
+  color: red;
+}
+
+/* Моб. адаптация */
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-group button {
+    width: 100%;
+  }
 }
