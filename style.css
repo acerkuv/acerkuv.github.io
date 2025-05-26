@@ -27,6 +27,10 @@ button {
   width: 100%;
   padding: 10px;
 }
+#margin-box {
+  font-size: 16px;
+  border-left: 4px solid currentColor;
+}
 
 #income-label {
   font-weight: bold;
