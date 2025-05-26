@@ -164,6 +164,26 @@ body {
     align-items: stretch;
   }
 
+  .left-panel button,
+.center-panel button {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.left-panel button:hover,
+.center-panel button:hover {
+  background-color: #0056b3;
+}
+
   .input-group button {
     width: 100%;
   }
