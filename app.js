@@ -13,18 +13,22 @@ let rrc = 0;
 
 const modelsDiv = document.getElementById('models');
 const detailsDiv = document.getElementById('details');
-const incomeLabel = document.getElementById('income-label');
 
 async function init() {
-  data.p = await readJSON('/norm_jsons/p.json');
-  data.d = await readJSON('/norm_jsons/d3.json');
+  try {
+    data.p = await readJSON('/norm_jsons/p.json');
+    data.d = await readJSON('/norm_jsons/d3.json');
 
-  Object.keys(data.p).forEach(model => {
-    const btn = document.createElement('button');
-    btn.textContent = model;
-    btn.onclick = () => selectModel(model);
-    modelsDiv.appendChild(btn);
-  });
+    Object.keys(data.p).forEach(model => {
+      const btn = document.createElement('button');
+      btn.textContent = model;
+      btn.onclick = () => selectModel(model);
+      modelsDiv.appendChild(btn);
+    });
+  } catch (err) {
+    console.error("Ошибка загрузки JSON:", err);
+    detailsDiv.innerHTML = "<p style='color:red;'>Ошибка загрузки данных</p>";
+  }
 }
 
 function selectModel(model) {
@@ -159,26 +163,7 @@ function printMargin() {
   const totalMargin = sumValues(margin);
   const netMargin = totalMargin / 1.2;
 
-  incomeLabel.innerHTML = `
-    Маржа: ${totalMargin.toLocaleString()} руб<br>
-    Чистая маржа: ${netMargin.toLocaleString()} руб
-  `;
-  incomeLabel.style.color = totalMargin > 0 ? 'green' : 'red';
-  incomeLabel.style.fontWeight = 'bold';
-}
-
-function sumValues(obj) {
-  return Object.values(obj).reduce((a, b) => a + b, 0);
-}
-
-function extractDigits(str) {
-  return parseInt(str.replace(/\D/g, ''), 10) || 0;
-}
-function printMargin() {
-  const totalMargin = sumValues(margin);
-  const netMargin = totalMargin / 1.2;
-
-  // Очищаем старый блок, если он уже есть
+  // Очищаем старый блок маржи, если есть
   const oldMarginBox = document.getElementById('margin-box');
   if (oldMarginBox) oldMarginBox.remove();
 
@@ -191,19 +176,27 @@ function printMargin() {
   marginBox.style.backgroundColor = '#f9f9f9';
   marginBox.style.color = totalMargin > 0 ? 'green' : 'red';
   marginBox.style.fontWeight = 'bold';
+  marginBox.style.fontSize = '16px';
 
   marginBox.innerHTML = `
     Маржа: ${totalMargin.toLocaleString()} руб<br>
     Чистая маржа: ${netMargin.toLocaleString()} руб
   `;
 
-  // Добавляем его перед dashboard или в конец details
   const dashboard = document.getElementById('dashboard');
   if (dashboard) {
     dashboard.parentNode.insertBefore(marginBox, dashboard);
   } else {
     detailsDiv.appendChild(marginBox);
   }
+}
+
+function sumValues(obj) {
+  return Object.values(obj).reduce((a, b) => a + b, 0);
+}
+
+function extractDigits(str) {
+  return parseInt(str.replace(/\D/g, ''), 10) || 0;
 }
 
 function clearDetails() {
