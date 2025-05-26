@@ -1,4 +1,4 @@
-/* Основные стили */
+/* === Общие стили === */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f4f4;
@@ -25,15 +25,16 @@ body {
   }
 }
 
-/* Левая панель моделей */
+/* === Левая панель моделей === */
 .left-panel {
   flex: 1;
   margin-bottom: 20px;
+  max-width: 300px; /* фиксированная ширина для кнопок моделей */
 }
 
 .left-panel button {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   margin: 5px 0;
   font-size: 16px;
   font-weight: bold;
@@ -43,23 +44,34 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  box-sizing: border-box;
 }
 
 .left-panel button:hover {
   background-color: #0056b3;
 }
 
-/* Центральная панель деталей */
+/* Отступ между левой и центральной панелью на десктопе */
+@media (min-width: 768px) {
+  .left-panel {
+    margin-right: 20px;
+  }
+
+  .center-panel {
+    margin-left: 10px;
+  }
+}
+
+/* === Центральная панель деталей === */
 .center-panel {
   flex: 2;
 }
 
-.center-panel > div,
-.center-panel > button {
+.center-panel > *:not(.input-group):not(.grid-container) {
   margin-bottom: 15px;
 }
 
-/* Цена автомобиля */
+/* === Цена автомобиля === */
 .price-label {
   background-color: #ffc107;
   color: #333;
@@ -71,7 +83,7 @@ body {
   margin-bottom: 15px;
 }
 
-/* Кнопки скидок */
+/* === Кнопки скидок === */
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -94,98 +106,21 @@ body {
   background-color: #1e7e34;
 }
 
-/* Поля ввода */
+/* === Поля ввода (стимулирующая, Trade-in) === */
 .input-group {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-weight: bold;
+  min-width: 120px;
 }
 
 .input-group input {
   flex: 1;
   padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.input-group button {
-  padding: 8px 12px;
-  font-size: 14px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.input-group button:hover {
-  background-color: #0056b3;
-}
-
-/* Поле применённых скидок */
-#dashboard {
-  background-color: #f8f9fa;
-  border: 1px solid #ced4da;
-  padding: 10px;
-  min-height: 100px;
-  white-space: pre-wrap;
-  border-radius: 6px;
-  font-family: monospace;
-  font-size: 14px;
-  color: #333;
-}
-
-/* Блок маржи */
-#margin-box {
-  margin-top: 20px;
-  padding: 12px;
-  border-left: 4px solid currentColor;
-  background-color: #f1f1f1;
-  border-radius: 6px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-#margin-box.green {
-  color: green;
-}
-
-#margin-box.red {
-  color: red;
-}
-
-/* Моб. адаптация */
-@media (max-width: 768px) {
-  .left-panel button {
-    font-size: 14px;
-    padding: 8px;
-  }
-}
-
-  .left-panel button,
-.center-panel button {
-  width: 100%;
-  padding: 12px;
-  margin: 5px 0;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.left-panel button:hover,
-.center-panel button:hover {
-  background-color: #0056b3;
-}
-
-  .input-group button {
-    width: 100%;
-  }
-}
+  font-size:
