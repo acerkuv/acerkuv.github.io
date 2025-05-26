@@ -1,182 +1,182 @@
-let p = {}; // Цены
-let d = {}; // Скидки
+import { readJSON } from './utils.js';
 
-let model = null;
-let rrc = 0;
+let data = {
+  p: {},
+  d: {}
+};
+
+let selectedModel = null;
+let selectedModification = null;
 let usedDiscounts = {};
 let margin = {};
+let rrc = 0;
 
-const modelButtonsDiv = document.getElementById("model-buttons");
-const centerPanel = document.getElementById("center-panel");
-const priceLabel = document.getElementById("price-label");
-const dashboardContent = document.getElementById("dashboard-content");
-const incomeLabel = document.getElementById("income-label");
-const discountsGrid = document.getElementById("discounts-grid");
+const modelsDiv = document.getElementById('models');
+const detailsDiv = document.getElementById('details');
+const incomeLabel = document.getElementById('income-label');
 
-// Загрузка данных
-document.addEventListener("DOMContentLoaded", () => {
-    fetch('data/p.json')
-        .then(res => res.json())
-        .then(data => {
-            p = data;
-            createModelButtons();
-        });
+async function init() {
+  data.p = await readJSON('/norm_jsons/p.json');
+  data.d = await readJSON('/norm_jsons/d3.json');
 
-    fetch('data/d3.json')
-        .then(res => res.json())
-        .then(data => {
-            d = data;
-        });
-});
-
-function createModelButtons() {
-    modelButtonsDiv.innerHTML = "";
-    for (let modelName in p) {
-        const btn = document.createElement("button");
-        btn.textContent = modelName;
-        btn.onclick = () => selectModel(modelName);
-        modelButtonsDiv.appendChild(btn);
-    }
+  Object.keys(data.p).forEach(model => {
+    const btn = document.createElement('button');
+    btn.textContent = model;
+    btn.onclick = () => selectModel(model);
+    modelsDiv.appendChild(btn);
+  });
 }
 
-function selectModel(modelName) {
-    model = modelName;
-    clearCenterPanel();
+function selectModel(model) {
+  selectedModel = model;
+  clearDetails();
 
-    const group = document.createElement("div");
-    for (let modName in p[model]) {
-        const btn = document.createElement("button");
-        btn.textContent = modName;
-        btn.onclick = () => selectModification(modName);
-        group.appendChild(btn);
-    }
-    centerPanel.appendChild(group);
+  const group = document.createElement('div');
+  Object.keys(data.p[model]).forEach(mod => {
+    const btn = document.createElement('button');
+    btn.textContent = mod;
+    btn.onclick = () => selectModification(mod);
+    group.appendChild(btn);
+  });
+
+  detailsDiv.appendChild(group);
 }
 
 function selectModification(modification) {
-    clearCenterPanel();
+  selectedModification = modification;
+  clearDetails();
 
-    rrc = p[model][modification];
-    usedDiscounts = {};
-    let carM = model.includes("ALSVIN") ? 0.05 : 0.06;
-    margin = { "Маржа": rrc * carM };
+  rrc = data.p[selectedModel][modification];
+  usedDiscounts = {};
+  margin = { "Маржа": rrc * (selectedModel.includes("ALSVIN") ? 0.05 : 0.06) };
 
-    // Цена
-    priceLabel.textContent = `Цена: ${rrc.toLocaleString()} руб`;
-    centerPanel.appendChild(priceLabel);
+  const priceLabel = document.createElement('div');
+  priceLabel.style.background = 'yellow';
+  priceLabel.style.padding = '8px';
+  priceLabel.style.fontSize = '16px';
+  priceLabel.style.textAlign = 'center';
+  priceLabel.textContent = `Цена: ${rrc.toLocaleString()} руб`;
+  detailsDiv.appendChild(priceLabel);
 
-    // Скидки
-    const grid = document.createElement("div");
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "2fr 1fr";
-    grid.style.gap = "10px";
+  const grid = document.createElement('div');
+  for (const discountName in data.d[selectedModel]) {
+    const cleanName = discountName.replace("для клиента", "");
+    const btn = document.createElement('button');
+    btn.textContent = cleanName;
+    btn.onclick = () => clickDiscount(discountName);
+    grid.appendChild(btn);
+  }
 
-    for (let discountName in d[model]) {
-        const btn = document.createElement("button");
-        btn.textContent = discountName.replace("для клиента", "");
-        btn.onclick = () => applyDiscount(discountName);
+  detailsDiv.appendChild(grid);
 
-        const label = document.createElement("div");
-        label.textContent = `${d[model][discountName].toLocaleString()} руб`;
+  addInput("Стимулирующая", "stim");
+  addInput("Trade-In", "tr");
 
-        grid.appendChild(btn);
-        grid.appendChild(label);
-    }
-    centerPanel.appendChild(grid);
+  const dashboard = document.createElement('pre');
+  dashboard.id = 'dashboard';
+  dashboard.style.border = '1px solid #ccc';
+  dashboard.style.padding = '5px';
+  dashboard.style.minHeight = '100px';
+  dashboard.style.marginTop = '10px';
+  detailsDiv.appendChild(dashboard);
 
-    // Стимулирующая
-    const stimGroup = document.createElement("div");
-    stimGroup.className = "input-group";
-    stimGroup.innerHTML = `
-        <label>Стимулирующая:</label>
-        <input type="text" id="stim-input">
-        <button onclick="applyStim()">Применить</button>
-    `;
-    centerPanel.appendChild(stimGroup);
-
-    // Trade-in
-    const trGroup = document.createElement("div");
-    trGroup.className = "input-group";
-    trGroup.innerHTML = `
-        <label>Trade-In:</label>
-        <input type="text" id="tr-input">
-        <button onclick="calculateTr()">Рассчитать</button>
-    `;
-    centerPanel.appendChild(trGroup);
-
-    // Результаты
-    centerPanel.appendChild(document.getElementById("dashboard"));
+  printMargin();
 }
 
-function extractDigits(str) {
-    return parseInt(str.replace(/\D+/g, "")) || 0;
+function addInput(labelText, id) {
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.alignItems = 'center';
+  container.style.marginTop = '10px';
+
+  const input = document.createElement('input');
+  input.placeholder = labelText;
+  input.id = 'e_' + id;
+
+  const button = document.createElement('button');
+  button.textContent = 'Применить';
+  button.onclick = () => {
+    if (id === 'stim') clickStim();
+    if (id === 'tr') raschTr();
+  };
+
+  container.appendChild(document.createTextNode(labelText + ': '));
+  container.appendChild(input);
+  container.appendChild(button);
+
+  detailsDiv.appendChild(container);
 }
 
-function applyDiscount(name) {
-    const value = d[model][name];
-    usedDiscounts[name] = value;
-    updateDashboard();
-    printMargin();
+function clickDiscount(name) {
+  const value = data.d[selectedModel][name];
+  usedDiscounts[name] = value;
+  updateDashboard();
+  printMargin();
 }
 
-function applyStim() {
-    if (!rrc) return alert("Сначала выберите модель");
+function clickStim() {
+  if (!rrc) return alert("Выберите модель и комплектацию");
 
-    const input = document.getElementById("stim-input").value;
-    let value = extractDigits(input);
+  const stimInput = document.getElementById('e_stim');
+  let stimValue = extractDigits(stimInput.value);
 
-    if (value <= rrc * 0.3) {
-        usedDiscounts["Стимулирующая"] = value;
-        margin["Стимулирующая"] = -value;
-    } else {
-        const total = sumObjectValues(usedDiscounts);
-        const leftover = rrc - total - value;
-        usedDiscounts["Стимулирующая"] = value;
-        margin["Стимулирующая"] = -value;
-    }
+  if (stimValue <= rrc * 0.3) {
+    usedDiscounts["Стимулирующая"] = stimValue;
+    margin["Стимулирующая"] = -stimValue;
+  } else {
+    const totalDisc = sumValues(usedDiscounts) + stimValue;
+    const remaining = rrc - totalDisc;
+    const correctedStim = rrc - sumValues(usedDiscounts) - remaining;
+    usedDiscounts["Стимулирующая"] = correctedStim;
+    margin["Стимулирующая"] = -correctedStim;
+  }
 
-    updateDashboard();
-    printMargin();
+  updateDashboard();
+  printMargin();
 }
 
-function calculateTr() {
-    const input = document.getElementById("tr-input").value;
-    const value = extractDigits(input);
-    margin["Расчетка по Trade-In"] = value;
-    printMargin();
+function raschTr() {
+  const trInput = document.getElementById('e_tr');
+  const trValue = extractDigits(trInput.value);
+  margin["Расчетка по Trade-In"] = trValue;
+  printMargin();
 }
 
 function updateDashboard() {
-    let result = "";
-    let totalRRC = rrc;
-
-    for (let key in usedDiscounts) {
-        totalRRC -= usedDiscounts[key];
-        result += ` - ${key}, ${usedDiscounts[key].toLocaleString()} руб = ${totalRRC.toLocaleString()}\n`;
-    }
-
-    const totalDisc = sumObjectValues(usedDiscounts);
-    result += `\nСумма скидок: ${totalDisc.toLocaleString()} руб`;
-    dashboardContent.textContent = result;
+  const dashboard = document.getElementById('dashboard');
+  let text = "";
+  let t_rrc = rrc;
+  for (const [key, value] of Object.entries(usedDiscounts)) {
+    t_rrc -= value;
+    text += ` - ${key.replace('для клиента', '')}, ${value.toLocaleString()} руб = ${t_rrc.toLocaleString()}\n`;
+  }
+  const totalDisc = sumValues(usedDiscounts);
+  text += `\nСумма скидок: ${totalDisc.toLocaleString()} руб`;
+  dashboard.textContent = text;
 }
 
 function printMargin() {
-    const total = sumObjectValues(margin);
-    const color = total > 0 ? "green" : "red";
-    incomeLabel.innerHTML = `
-        Маржа: ${total.toLocaleString()} руб<br>
-        Чистая маржа: ${(total / 1.2).toLocaleString()} руб
-    `;
-    incomeLabel.style.color = color;
-    incomeLabel.style.fontWeight = "bold";
+  const totalMargin = sumValues(margin);
+  const netMargin = totalMargin / 1.2;
+
+  incomeLabel.innerHTML = `
+    Маржа: ${totalMargin.toLocaleString()} руб<br>
+    Чистая маржа: ${netMargin.toLocaleString()} руб
+  `;
+  incomeLabel.style.color = totalMargin > 0 ? 'green' : 'red';
+  incomeLabel.style.fontWeight = 'bold';
 }
 
-function sumObjectValues(obj) {
-    return Object.values(obj).reduce((a, b) => a + b, 0);
+function sumValues(obj) {
+  return Object.values(obj).reduce((a, b) => a + b, 0);
 }
 
-function clearCenterPanel() {
-    while (centerPanel.firstChild && centerPanel.firstChild !== document.getElementById("dashboard")) {
-        centerPanel.removeChild(centerPanel.firstChild);
-    }
+function extractDigits(str) {
+  return parseInt(str.replace(/\D/g, ''), 10) || 0;
 }
+
+function clearDetails() {
+  detailsDiv.innerHTML = '';
+}
+
+window.onload = init;
