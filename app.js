@@ -174,6 +174,37 @@ function sumValues(obj) {
 function extractDigits(str) {
   return parseInt(str.replace(/\D/g, ''), 10) || 0;
 }
+function printMargin() {
+  const totalMargin = sumValues(margin);
+  const netMargin = totalMargin / 1.2;
+
+  // Очищаем старый блок, если он уже есть
+  const oldMarginBox = document.getElementById('margin-box');
+  if (oldMarginBox) oldMarginBox.remove();
+
+  // Создаем новый блок
+  const marginBox = document.createElement('div');
+  marginBox.id = 'margin-box';
+  marginBox.style.marginTop = '20px';
+  marginBox.style.padding = '10px';
+  marginBox.style.border = '1px solid #ccc';
+  marginBox.style.backgroundColor = '#f9f9f9';
+  marginBox.style.color = totalMargin > 0 ? 'green' : 'red';
+  marginBox.style.fontWeight = 'bold';
+
+  marginBox.innerHTML = `
+    Маржа: ${totalMargin.toLocaleString()} руб<br>
+    Чистая маржа: ${netMargin.toLocaleString()} руб
+  `;
+
+  // Добавляем его перед dashboard или в конец details
+  const dashboard = document.getElementById('dashboard');
+  if (dashboard) {
+    dashboard.parentNode.insertBefore(marginBox, dashboard);
+  } else {
+    detailsDiv.appendChild(marginBox);
+  }
+}
 
 function clearDetails() {
   detailsDiv.innerHTML = '';
