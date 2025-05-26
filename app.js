@@ -55,14 +55,13 @@ function selectModification(modification) {
   margin = { "Маржа": rrc * (selectedModel.includes("ALSVIN") ? 0.05 : 0.06) };
 
   const priceLabel = document.createElement('div');
-  priceLabel.style.background = 'yellow';
-  priceLabel.style.padding = '8px';
-  priceLabel.style.fontSize = '16px';
-  priceLabel.style.textAlign = 'center';
+  priceLabel.className = 'price-label';
   priceLabel.textContent = `Цена: ${rrc.toLocaleString()} руб`;
   detailsDiv.appendChild(priceLabel);
 
   const grid = document.createElement('div');
+  grid.className = 'grid-container';
+
   for (const discountName in data.d[selectedModel]) {
     const cleanName = discountName.replace("для клиента", "");
     const btn = document.createElement('button');
@@ -78,10 +77,6 @@ function selectModification(modification) {
 
   const dashboard = document.createElement('pre');
   dashboard.id = 'dashboard';
-  dashboard.style.border = '1px solid #ccc';
-  dashboard.style.padding = '5px';
-  dashboard.style.minHeight = '100px';
-  dashboard.style.marginTop = '10px';
   detailsDiv.appendChild(dashboard);
 
   printMargin();
@@ -89,9 +84,10 @@ function selectModification(modification) {
 
 function addInput(labelText, id) {
   const container = document.createElement('div');
-  container.style.display = 'flex';
-  container.style.alignItems = 'center';
-  container.style.marginTop = '10px';
+  container.className = 'input-group';
+
+  const label = document.createElement('label');
+  label.textContent = labelText + ': ';
 
   const input = document.createElement('input');
   input.placeholder = labelText;
@@ -104,7 +100,7 @@ function addInput(labelText, id) {
     if (id === 'tr') raschTr();
   };
 
-  container.appendChild(document.createTextNode(labelText + ': '));
+  container.appendChild(label);
   container.appendChild(input);
   container.appendChild(button);
 
@@ -163,20 +159,12 @@ function printMargin() {
   const totalMargin = sumValues(margin);
   const netMargin = totalMargin / 1.2;
 
-  // Очищаем старый блок маржи, если есть
   const oldMarginBox = document.getElementById('margin-box');
   if (oldMarginBox) oldMarginBox.remove();
 
-  // Создаем новый блок
   const marginBox = document.createElement('div');
   marginBox.id = 'margin-box';
-  marginBox.style.marginTop = '20px';
-  marginBox.style.padding = '10px';
-  marginBox.style.border = '1px solid #ccc';
-  marginBox.style.backgroundColor = '#f9f9f9';
   marginBox.style.color = totalMargin > 0 ? 'green' : 'red';
-  marginBox.style.fontWeight = 'bold';
-  marginBox.style.fontSize = '16px';
 
   marginBox.innerHTML = `
     Маржа: ${totalMargin.toLocaleString()} руб<br>
@@ -185,7 +173,7 @@ function printMargin() {
 
   const dashboard = document.getElementById('dashboard');
   if (dashboard) {
-    dashboard.parentNode.insertBefore(marginBox, dashboard);
+    dashboard.parentNode.insertBefore(marginBox, dashboard.nextSibling);
   } else {
     detailsDiv.appendChild(marginBox);
   }
