@@ -159,10 +159,11 @@ body {
 
 /* Моб. адаптация */
 @media (max-width: 768px) {
-  .input-group {
-    flex-direction: column;
-    align-items: stretch;
+  .left-panel button {
+    font-size: 14px;
+    padding: 8px;
   }
+}
 
   .left-panel button,
 .center-panel button {
