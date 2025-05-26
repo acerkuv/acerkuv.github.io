@@ -1,0 +1,57 @@
+{
+  "ALSVIN": {
+    "1.5 DCT LX": 1850000,
+    "1.5 DCT Luce": 1870000,
+    "1.5 DCT DUX": 1899900,
+    "1.5 DCT Tech": 1919900
+  },
+  "EADO PLUS": {
+    "1.4T DCT LX": 2439900,
+    "1.4T DCT Luce": 2459900,
+    "1.4T DCT DUX": 2509900,
+    "1.4T DCT Tech": 2529900
+  },
+  "LAMORE": {
+    "1.5T DCT Tech": 2869900
+  },
+  "CS35 PLUS": {
+    "1.4T DCT Advance": 2569900,
+    "1.4T DCT Tech": 2629900
+  },
+  "UNI-S": {
+    "1.5T DCT Comfort": 2839900,
+    "1.5T DCT Love": 2899900,
+    "1.5T DCT Tech": 2959900
+  },
+  "CS75 PLUS": {
+    "1.5AT Comfort 2WD": 3590000,
+    "2.0AT Love 2WD": 3790000,
+    "2.0AT Tech 2WD": 3849900
+  },
+  "CS95 NEW": {
+    "2.0T AT DUX": 4529900,
+    "2.0T AT Black Edition": 4599900,
+    "2.0T AT Tech": 4609900,
+    "2.0T AT Tech Black Edition": 4679900
+  },
+  "UNI-K": {
+    "2.0T AT 24WD Comfort": 3969900,
+    "2.0T AT 4WD Luxe": 4399900,
+    "2.0T AT 4WD Tech": 4549900
+  },
+  "UNI-V": {
+    "1.5T DCT LX": 3069900,
+    "1.5T DCT Luxe": 3139900,
+    "1.5T DCT DLX": 3139900,
+    "1.5T DCT Tech": 3209900
+  },
+  "UNI-T": {
+    "1.5T DCT Luxe": 3069900,
+    "1.5T DCT Tech": 3169900,
+    "1.5T DCT Tech_25kW": 3239900
+  },
+  "HUNTER PLUS": {
+    "2.0T SAT 4WD Luce": 3739900
+  }
+}
+
