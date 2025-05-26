@@ -36,12 +36,16 @@ function selectModel(model) {
   clearDetails();
 
   const group = document.createElement('div');
+
   Object.keys(data.p[model]).forEach(mod => {
     const btn = document.createElement('button');
     btn.textContent = mod;
     btn.onclick = () => selectModification(mod);
     group.appendChild(btn);
   });
+
+  detailsDiv.appendChild(group);
+}
 
   detailsDiv.appendChild(group);
 }
