@@ -1,14 +1,14 @@
 {
   "ALSVIN": {
     "1.5 DCT LX": 1850000,
-    "1.5 DCT Luce": 1870000,
-    "1.5 DCT DUX": 1899900,
+    "1.5 DCT Luxe": 1870000,
+    "1.5 DCT DLX": 1899900,
     "1.5 DCT Tech": 1919900
   },
   "EADO PLUS": {
     "1.4T DCT LX": 2439900,
-    "1.4T DCT Luce": 2459900,
-    "1.4T DCT DUX": 2509900,
+    "1.4T DCT Luxe": 2459900,
+    "1.4T DCT DLX": 2509900,
     "1.4T DCT Tech": 2529900
   },
   "LAMORE": {
@@ -20,16 +20,16 @@
   },
   "UNI-S": {
     "1.5T DCT Comfort": 2839900,
-    "1.5T DCT Love": 2899900,
+    "1.5T DCT Luxe": 2899900,
     "1.5T DCT Tech": 2959900
   },
   "CS75 PLUS": {
     "1.5AT Comfort 2WD": 3590000,
-    "2.0AT Love 2WD": 3790000,
-    "2.0AT Tech 2WD": 3849900
+    "2.0AT Luxe 2WD": 3790000,
+    "2.0AT Tech 2WD": 3949900
   },
   "CS95 NEW": {
-    "2.0T AT DUX": 4529900,
+    "2.0T AT DLX": 4529900,
     "2.0T AT Black Edition": 4599900,
     "2.0T AT Tech": 4609900,
     "2.0T AT Tech Black Edition": 4679900
@@ -51,7 +51,6 @@
     "1.5T DCT Tech_25kW": 3239900
   },
   "HUNTER PLUS": {
-    "2.0T SAT 4WD Luce": 3739900
+    "2.0T SAT 4WD Luxe": 3739900
   }
 }
-
